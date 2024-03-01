@@ -1,8 +1,9 @@
-package com.joohnq.propertiesrentalapp.view.fragments
+package com.joohnq.propertiesrentalapp.view.components
 
-import android.widget.Space
 import androidx.compose.foundation.background
+import androidx.compose.foundation.border
 import androidx.compose.foundation.layout.Box
+import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.PaddingValues
 import androidx.compose.foundation.layout.fillMaxHeight
 import androidx.compose.foundation.layout.fillMaxWidth
@@ -20,26 +21,26 @@ import androidx.compose.ui.graphics.Brush
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.tooling.preview.Preview
-import androidx.compose.ui.unit.Dp
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
+import com.joohnq.propertiesrentalapp.view.theme.Gray47
+import com.joohnq.propertiesrentalapp.view.theme.GrayE3
 import com.joohnq.propertiesrentalapp.view.theme.Purple62
 import com.joohnq.propertiesrentalapp.view.theme.Purple91
+import com.joohnq.propertiesrentalapp.view.theme.sfProDisplayFamily
 
 @Composable
 fun GradientFilledButton(
     modifier: Modifier,
     text: String,
-    fontSize: Int,
     fontWeight: FontWeight = FontWeight.Medium,
-    roundedCornerShape: RoundedCornerShape,
+    roundedCornerShape: RoundedCornerShape = RoundedCornerShape(30.dp),
     onClick: () -> Unit
 ) {
     val gradientColors = listOf(
         Purple91,
         Purple62
     )
-    val cornerRadius = 30.dp
 
     return Button(
         modifier = modifier,
@@ -48,7 +49,7 @@ fun GradientFilledButton(
         colors = ButtonDefaults.buttonColors(
             containerColor = Color.Transparent
         ),
-        shape = RoundedCornerShape(cornerRadius)
+        shape = roundedCornerShape
     ) {
 
         Box(
@@ -65,9 +66,44 @@ fun GradientFilledButton(
         ) {
             Text(
                 text = text,
-                fontSize = fontSize.sp,
-                color = Color.White,
-                fontWeight = fontWeight
+                style = p_16_medium_fs.copy(color = Color.White),
+            )
+        }
+    }
+}
+
+@Composable
+fun OutlineButton(
+    modifier: Modifier,
+    text: String,
+    fontWeight: FontWeight = FontWeight.Medium,
+    roundedCornerShape: RoundedCornerShape = RoundedCornerShape(30.dp),
+    onClick: () -> Unit
+) {
+    return Button(
+        modifier = modifier,
+        onClick = onClick,
+        contentPadding = PaddingValues(),
+        colors = ButtonDefaults.buttonColors(
+            containerColor = Color.Transparent
+        ),
+        shape = roundedCornerShape
+    ) {
+        Box(
+            modifier = Modifier
+                .fillMaxWidth()
+                .background(
+                    color = Color.White,
+                    shape = roundedCornerShape,
+                )
+                .clip(roundedCornerShape)
+                .padding(horizontal = 16.dp, vertical = 8.dp)
+                .fillMaxHeight(),
+            contentAlignment = Alignment.Center
+        ) {
+            Text(
+                text = text,
+                style = p_16_medium_fs.copy(color = Gray47),
             )
         }
     }
@@ -75,6 +111,7 @@ fun GradientFilledButton(
 
 @Composable
 fun GradientFilledButtonLarge(text: String, onClick: () -> Unit) {
+    val roundedCornerShape: RoundedCornerShape = RoundedCornerShape(30.dp)
 
     return GradientFilledButton(
         modifier = Modifier
@@ -82,16 +119,35 @@ fun GradientFilledButtonLarge(text: String, onClick: () -> Unit) {
             .padding(start = 32.dp, end = 32.dp)
             .height(50.dp),
         text = text,
-        fontSize = 16,
-        roundedCornerShape = RoundedCornerShape(16.dp),
         onClick = onClick
     )
 }
 
+@Composable
+fun OutlineButtonLarge(text: String, onClick: () -> Unit) {
+    val roundedCornerShape: RoundedCornerShape = RoundedCornerShape(30.dp)
+
+    return OutlineButton(
+        modifier = Modifier
+            .fillMaxWidth()
+            .padding(start = 32.dp, end = 32.dp)
+            .height(50.dp)
+            .border(width = 1.dp, color = GrayE3, shape = roundedCornerShape),
+        text = text,
+        onClick = onClick
+    )
+}
+
+
 @Preview(showBackground = true)
 @Composable
-fun GreetingPreview() {
-    GradientFilledButtonLarge(text = "Log in") {
-        println("Foi")
+fun ButtonPreview() {
+    Column {
+        GradientFilledButtonLarge(text = "Log in") {
+            println("Foi")
+        }
+        OutlineButtonLarge(text = "Log in") {
+            println("Foi")
+        }
     }
 }
