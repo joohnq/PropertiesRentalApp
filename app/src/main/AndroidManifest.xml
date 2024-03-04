@@ -14,14 +14,8 @@
         android:theme="@style/Theme.PropertiesRentalApp"
         tools:targetApi="31">
         <activity
-            android:name=".view.activities.HomeActivity"
-            android:exported="false"
-            android:label="@string/title_activity_home"
-            android:theme="@style/Theme.PropertiesRentalApp" />
-        <activity
-            android:name=".view.activities.MainActivity"
+            android:name=".view.activities.NavHostActivity"
             android:exported="true"
-            android:label="@string/app_name"
             android:theme="@style/Theme.PropertiesRentalApp">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />

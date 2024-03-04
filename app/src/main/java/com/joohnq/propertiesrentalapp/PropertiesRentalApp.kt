@@ -1,6 +1,7 @@
 package com.joohnq.propertiesrentalapp
 
 import android.app.Application
+import androidx.navigation.NavHost
 import com.joohnq.propertiesrentalapp.di.appModule
 import com.joohnq.propertiesrentalapp.di.repositoryModule
 import com.joohnq.propertiesrentalapp.di.viewModelModule

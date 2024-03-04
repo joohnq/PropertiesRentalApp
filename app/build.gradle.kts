@@ -50,11 +50,15 @@ android {
 }
 
 dependencies {
-    implementation(platform("androidx.compose:compose-bom:2023.08.00"))
-    androidTestImplementation(platform("androidx.compose:compose-bom:2023.08.00"))
     val koin_version = "3.5.3"
     val coroutines_version = "1.7.3"
     val okhttp_version = "4.12.0"
+    val navigation_compose_version = "2.7.7"
+    val compose_bom_version = "2024.02.01"
+
+    implementation(platform("androidx.compose:compose-bom:$compose_bom_version"))
+    implementation("androidx.navigation:navigation-compose:$navigation_compose_version")
+    androidTestImplementation(platform("androidx.compose:compose-bom:$compose_bom_version"))
 
     //OkHTTP
     implementation("com.squareup.okhttp3:okhttp:$okhttp_version")
