@@ -41,7 +41,6 @@ import com.joohnq.propertiesrentalapp.view.theme.GrayE3E3E7
 fun GradientFilledButton(
     modifier: Modifier,
     text: String,
-    fontWeight: FontWeight = FontWeight.Medium,
     roundedCornerShape: RoundedCornerShape = RoundedCornerShape(30.dp),
     onClick: () -> Unit
 ) {
@@ -176,7 +175,6 @@ fun ForgotPasswordButton(
 fun OutlineButton(
     modifier: Modifier,
     text: String,
-    fontWeight: FontWeight = FontWeight.Medium,
     roundedCornerShape: RoundedCornerShape = RoundedCornerShape(30.dp),
     onClick: () -> Unit
 ) {
@@ -211,8 +209,6 @@ fun OutlineButton(
 
 @Composable
 fun GradientFilledButtonLarge(text: String, onClick: () -> Unit) {
-    val roundedCornerShape: RoundedCornerShape = RoundedCornerShape(30.dp)
-
     return GradientFilledButton(
         modifier = Modifier
             .fillMaxWidth(1f)
