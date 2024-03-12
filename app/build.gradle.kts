@@ -58,18 +58,26 @@ dependencies {
     val coroutines_version = "1.7.3"
     val okhttp_version = "4.12.0"
     val navigation_compose_version = "2.7.7"
-    val compose_bom_version = "2024.02.01"
+    val compose_bom_version = "2024.02.02"
     val hilt_version = "2.51"
     val hilt_navigation_version = "1.2.0"
 
+    // Splash API
+    implementation("androidx.core:core-splashscreen:1.0.1")
+
+    //Loader
     implementation("com.github.commandiron:ComposeLoading:1.0.4")
 
     //FIREBASE
+    implementation(platform("com.google.firebase:firebase-bom:32.7.4"))
+    implementation("com.google.firebase:firebase-firestore")
     implementation(platform("androidx.compose:compose-bom:$compose_bom_version"))
     implementation("androidx.navigation:navigation-compose:$navigation_compose_version")
     androidTestImplementation(platform("androidx.compose:compose-bom:$compose_bom_version"))
-    implementation("com.google.firebase:firebase-analytics:21.5.1")
-    implementation("com.google.firebase:firebase-auth:22.3.1")
+    implementation("com.google.firebase:firebase-auth")
+    implementation("com.google.firebase:firebase-auth-ktx")
+    implementation("com.google.android.gms:play-services-auth:21.0.0")
+    implementation("com.google.firebase:firebase-analytics")
 
     //OkHTTP
     implementation("com.squareup.okhttp3:okhttp:$okhttp_version")

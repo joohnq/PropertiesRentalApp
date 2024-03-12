@@ -8,10 +8,10 @@
             <InsightsFilterSettings>
               <option name="connection">
                 <ConnectionSetting>
-                  <option name="appId" value="PLACEHOLDER" />
-                  <option name="mobileSdkAppId" value="" />
-                  <option name="projectId" value="" />
-                  <option name="projectNumber" value="" />
+                  <option name="appId" value="com.joohnq.propertiesrentalapp" />
+                  <option name="mobileSdkAppId" value="1:367617457100:android:2a97f732aaaa9a5092bb69" />
+                  <option name="projectId" value="propertiesrentalapp" />
+                  <option name="projectNumber" value="367617457100" />
                 </ConnectionSetting>
               </option>
               <option name="signal" value="SIGNAL_UNSPECIFIED" />
