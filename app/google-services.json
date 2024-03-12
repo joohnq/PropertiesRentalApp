@@ -1,0 +1,29 @@
+{
+  "project_info": {
+    "project_number": "367617457100",
+    "project_id": "propertiesrentalapp",
+    "storage_bucket": "propertiesrentalapp.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:367617457100:android:2a97f732aaaa9a5092bb69",
+        "android_client_info": {
+          "package_name": "com.joohnq.propertiesrentalapp"
+        }
+      },
+      "oauth_client": [],
+      "api_key": [
+        {
+          "current_key": "AIzaSyCHnKC0w8yCo0IMG8Z14_luotT1l4XE3ZQ"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": []
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
