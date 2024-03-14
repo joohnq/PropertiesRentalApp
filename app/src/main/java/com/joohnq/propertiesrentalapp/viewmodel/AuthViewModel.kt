@@ -98,4 +98,12 @@ class AuthViewModel @Inject constructor(
         _google.value = uiState
     }
 
+    fun setLogin(uiState: UiState<String?>) {
+        _login.value = uiState
+    }
+
+    fun setRegister(uiState: UiState<String?>) {
+        _register.value = uiState
+    }
+
 }

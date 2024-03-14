@@ -62,6 +62,12 @@ dependencies {
     val hilt_version = "2.51"
     val hilt_navigation_version = "1.2.0"
 
+    implementation("io.coil-kt:coil-compose:2.4.0")
+
+    implementation("com.google.accompanist:accompanist-permissions:0.28.0")
+
+    implementation("com.google.android.gms:play-services-location:21.2.0")
+
     // Splash API
     implementation("androidx.core:core-splashscreen:1.0.1")
 

@@ -14,18 +14,25 @@ import androidx.compose.ui.graphics.toArgb
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.platform.LocalView
 import androidx.core.view.WindowCompat
+import com.joohnq.propertiesrentalapp.view.theme.GrayFCFCFC
+import com.joohnq.propertiesrentalapp.view.theme.White
 
 private val DarkColorScheme = darkColorScheme(
     primary = Purple80,
     secondary = PurpleGrey80,
-    tertiary = Pink80
+    tertiary = Pink80,
+    background = GrayFCFCFC,
+    surfaceContainer = GrayFCFCFC,
+    surface = GrayFCFCFC
 )
 
 private val LightColorScheme = lightColorScheme(
     primary = Purple40,
     secondary = PurpleGrey40,
-    tertiary = Pink40
-
+    tertiary = Pink40,
+    background = GrayFCFCFC,
+    surfaceContainer = GrayFCFCFC,
+    surface = GrayFCFCFC
     /* Other default colors to override
     background = Color(0xFFFFFBFE),
     surface = Color(0xFFFFFBFE),
@@ -59,6 +66,8 @@ fun PropertiesRentalAppTheme(
             val window = (view.context as Activity).window
             window.statusBarColor = colorScheme.primary.toArgb()
             WindowCompat.getInsetsController(window, view).isAppearanceLightStatusBars = darkTheme
+            window.statusBarColor = White.toArgb()
+            window.navigationBarColor = White.toArgb()
         }
     }
 

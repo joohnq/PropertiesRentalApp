@@ -27,21 +27,59 @@ val Gray475569 = Color(0xFF475569)
 val GrayE3E3E7 = Color(0xFFE3E3E7)
 val Gray7D7F88 = Color(0xFF7D7F88)
 val GrayF2F2F2 = Color(0xFFF2F2F2)
+val GrayF2F2F3 = Color(0xFFF2F2F3)
 val GrayFCFCFC = Color(0xFFFCFCFC)
 val GrayEBE8F6 = Color(0xFFEBE8F6)
+val Gray434343 = Color(0xFF434343)
 
 val RedFF1717 = Color(0xFFFF1717)
 val RedFEF1F1 = Color(0xFFfef1f1)
 
-val GradientPurpleToPurple = listOf(
+val White = Color(0xFFFFFFFF)
+
+val GradientPurpleToPurpleList = listOf(
     Purple917AFD,
-    Purple6246EA
+    Purple6246EA,
 )
 val SemiWhite50 = Color(0x80FFFFFF)
 
-val GradientWhiteToTransparent = Brush.verticalGradient(
+val GradientPurpleToPurple: Brush = Brush.verticalGradient(
+    colors = GradientPurpleToPurpleList,
+)
+
+
+val GradientWhiteToTransparent: Brush = Brush.verticalGradient(
     colorStops = arrayOf(
         0.6f to Color.Transparent,
         1f to Color.White,
     ),
 )
+
+val GradientGrayE3E3E7: Brush = Brush.linearGradient(
+    colors = listOf(
+        GrayE3E3E7,
+        GrayE3E3E7,
+    )
+)
+
+val GradientGrayF2F2F3: Brush = Brush.verticalGradient(
+    colors = listOf(
+        GrayF2F2F3,
+        GrayF2F2F3,
+    )
+)
+
+val GradientRedFF1717: Brush = Brush.linearGradient(
+    colors = listOf(
+        RedFF1717,
+        RedFF1717,
+    )
+)
+
+val GradientGray7D7F88: Brush = Brush.linearGradient(
+    colors = listOf(
+        Gray7D7F88,
+        Gray7D7F88,
+    )
+)
+

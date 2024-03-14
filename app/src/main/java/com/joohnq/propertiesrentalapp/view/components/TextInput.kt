@@ -8,7 +8,6 @@ import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.foundation.text.KeyboardOptions
-import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.Icon
 import androidx.compose.material3.IconButton
 import androidx.compose.material3.OutlinedTextField
@@ -20,12 +19,12 @@ import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.focus.onFocusChanged
-import androidx.compose.ui.graphics.Brush
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.graphics.Shape
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.text.TextStyle
 import androidx.compose.ui.text.input.ImeAction
+import androidx.compose.ui.text.input.KeyboardCapitalization
 import androidx.compose.ui.text.input.KeyboardType
 import androidx.compose.ui.text.input.PasswordVisualTransformation
 import androidx.compose.ui.text.input.VisualTransformation
@@ -35,9 +34,10 @@ import com.joohnq.propertiesrentalapp.R
 import com.joohnq.propertiesrentalapp.util.Origin
 import com.joohnq.propertiesrentalapp.util.TextInputVerification
 import com.joohnq.propertiesrentalapp.view.theme.Blue1A1E25
+import com.joohnq.propertiesrentalapp.view.theme.GradientGrayE3E3E7
 import com.joohnq.propertiesrentalapp.view.theme.GradientPurpleToPurple
+import com.joohnq.propertiesrentalapp.view.theme.GradientRedFF1717
 import com.joohnq.propertiesrentalapp.view.theme.Gray7D7F88
-import com.joohnq.propertiesrentalapp.view.theme.GrayE3E3E7
 import com.joohnq.propertiesrentalapp.view.theme.GrayF2F2F2
 import com.joohnq.propertiesrentalapp.view.theme.Purple6246EA
 import com.joohnq.propertiesrentalapp.view.theme.PurpleF1F1FE
@@ -85,7 +85,6 @@ fun CustomTextField(
 
 }
 
-@OptIn(ExperimentalMaterial3Api::class)
 @Composable
 fun CustomTextFieldNormal(
     value: String,
@@ -107,16 +106,12 @@ fun CustomTextFieldNormal(
             .border(
                 width = 1.5.dp,
                 brush = if (isError)
-                    Brush.linearGradient(colors = listOf(RedFF1717, RedFF1717))
+                    GradientRedFF1717
                 else (
-                        if (focus.value) Brush.linearGradient(
-                            colors = GradientPurpleToPurple
-                        ) else Brush.linearGradient(
-                            colors = listOf(
-                                GrayE3E3E7,
-                                GrayE3E3E7
-                            )
-                        )
+                        if (focus.value)
+                            GradientPurpleToPurple
+                        else
+                            GradientGrayE3E3E7
                         ),
                 shape = shape
             )
@@ -244,6 +239,39 @@ fun TextFieldPassword(
         }) { p: String -> onPasswordChange(p) }
 }
 
+@Composable
+fun SearchBarWithFilter(
+    text: String,
+    onTextChange: (String) -> Unit,
+    onFilterButtonIsClicked: () -> Unit,
+) {
+    CustomTextFieldNormal(
+        value = text,
+        placeholder = { Text("Search address, city, location") },
+        onFocusChanged = { state: Boolean, hasFocus: Boolean ->
+        },
+        keyboardOptions = KeyboardOptions(
+            keyboardType = KeyboardType.Text,
+            autoCorrect = true,
+            capitalization = KeyboardCapitalization.Words,
+            imeAction = ImeAction.Done,
+        ),
+        trailingIcon = {
+            IconButton(onClick = { onFilterButtonIsClicked }) {
+                Icon(
+                    painter = painterResource(id = R.drawable.ic_filter),
+                    contentDescription = "Filter"
+                )
+            }
+        },
+        leadingIcon = {
+            Icon(
+                painter = painterResource(id = R.drawable.ic_search),
+                contentDescription = "Search"
+            )
+        }) { p: String -> onTextChange(p) }
+}
+
 @Preview(showBackground = true)
 @Composable
 fun CustomTextFieldPreview() {
@@ -256,5 +284,6 @@ fun CustomTextFieldPreview() {
             }) {
             println("Foi")
         }
+        SearchBarWithFilter("", {}, {})
     }
 }

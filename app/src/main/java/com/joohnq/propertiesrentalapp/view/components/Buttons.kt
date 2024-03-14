@@ -57,7 +57,7 @@ fun GradientFilledButton(
             modifier = Modifier
                 .fillMaxWidth()
                 .background(
-                    brush = Brush.linearGradient(colors = GradientPurpleToPurple),
+                    brush = GradientPurpleToPurple,
                     shape = roundedCornerShape
                 )
                 .clip(roundedCornerShape)
@@ -221,6 +221,20 @@ fun GradientFilledButtonLarge(text: String, onClick: () -> Unit) {
 @Composable
 fun OutlineButtonLarge(text: String, onClick: () -> Unit) {
     val roundedCornerShape: RoundedCornerShape = RoundedCornerShape(30.dp)
+
+    return OutlineButton(
+        modifier = Modifier
+            .fillMaxWidth()
+            .height(50.dp)
+            .border(width = 1.dp, color = GrayE3E3E7, shape = roundedCornerShape),
+        text = text,
+        onClick = onClick
+    )
+}
+
+@Composable
+fun OutlineButtonLargeSquare(text: String, onClick: () -> Unit) {
+    val roundedCornerShape: RoundedCornerShape = RoundedCornerShape(5.dp)
 
     return OutlineButton(
         modifier = Modifier

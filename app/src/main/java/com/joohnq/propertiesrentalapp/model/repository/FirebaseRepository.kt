@@ -6,7 +6,6 @@ import com.google.firebase.auth.FirebaseAuthEmailException
 import com.google.firebase.auth.FirebaseAuthException
 import com.google.firebase.auth.FirebaseAuthInvalidCredentialsException
 import com.google.firebase.auth.FirebaseAuthInvalidUserException
-import com.google.firebase.auth.FirebaseAuthWeakPasswordException
 import com.google.firebase.firestore.DocumentSnapshot
 import com.google.firebase.firestore.FirebaseFirestore
 import com.google.firebase.firestore.toObject
@@ -56,7 +55,8 @@ class FirebaseRepositoryImpl @Inject constructor(
         email: String, password: String, onFailure: (String) -> Unit
     ): Boolean = suspendCoroutine { continuation ->
         try {
-            auth.createUserWithEmailAndPassword(email, password)
+            auth
+                .createUserWithEmailAndPassword(email, password)
                 .addOnSuccessListener { authResult ->
                     scope.launch {
                         val userNotNull = authResult.user != null
@@ -67,7 +67,6 @@ class FirebaseRepositoryImpl @Inject constructor(
 
                         if (!userNotNull) {
                             onFailure("User not created!")
-                            continuation.resume(false)
                         }
 
                         createUserOnDatabase(
@@ -76,15 +75,23 @@ class FirebaseRepositoryImpl @Inject constructor(
                         )
                         continuation.resume(userNotNull)
                     }
-                }.addOnFailureListener {
-                    onFailure("Operation failed")
+                }.addOnFailureListener { error ->
+                    when (error) {
+                        is FirebaseAuthInvalidCredentialsException -> {
+                            onFailure("Invalid credentials! ${error.message}")
+                        }
+
+                        is FirebaseAuthEmailException -> {
+                            onFailure("Email invalid! ${error.message}")
+                        }
+
+                        else -> {
+                            onFailure("Operation failed")
+                        }
+                    }
                 }
-        } catch (e: FirebaseAuthInvalidCredentialsException) {
-            onFailure("Invalid credentials! ${e.message}")
-        } catch (e: FirebaseAuthEmailException) {
-            onFailure("Email invalid! ${e.message}")
-        } catch (e: FirebaseAuthWeakPasswordException) {
-            onFailure("Password is weak! ${e.message}")
+        } catch (e: FirebaseAuthException) {
+            onFailure("Operation failed! ${e.message}")
         }
     }
 

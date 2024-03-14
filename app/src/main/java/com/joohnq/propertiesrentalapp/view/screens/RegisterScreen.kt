@@ -112,6 +112,7 @@ fun RegisterScreen(
                 Column(
                     modifier = Modifier
                         .padding(padding)
+                        .background(color = GrayFCFCFC)
                 ) {
                     IconButton(
                         modifier = Modifier
@@ -207,6 +208,7 @@ fun RegisterScreen(
                     is UiState.Success -> {
                         LoadingPage(isLoading = false)
                         navController.navigate(Screen.HomeScreen.rout)
+                        authViewModel.setRegister(UiState.None)
                     }
 
                     is UiState.Failure -> {
@@ -230,6 +232,7 @@ fun RegisterScreen(
                     is UiState.Success -> {
                         LoadingPage(isLoading = false)
                         navController.navigate(Screen.HomeScreen.rout)
+                        authViewModel.setGoogle(UiState.None)
                     }
 
                     is UiState.Failure -> {

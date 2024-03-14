@@ -7,6 +7,11 @@ object Constants {
     const val LOGIN_SCREEN = "login_screen"
     const val REGISTER_SCREEN = "register_screen"
     const val HOME_SCREEN = "home_screen"
+    const val EXPLORE_SCREEN = "explore_screen"
+    const val CHAT_SCREEN = "chat_screen"
+    const val SAVED_SCREEN = "saved_screen"
+    const val PROFILE_SCREEN = "profile_screen"
 
     const val FIREBASE_USERS = "users"
+
 }
