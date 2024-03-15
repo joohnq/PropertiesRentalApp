@@ -29,6 +29,7 @@ import androidx.compose.runtime.rememberCoroutineScope
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.res.painterResource
+import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.navigation.NavController
@@ -123,25 +124,25 @@ fun RegisterScreen(
                         Icon(
                             tint = Blue1A1E25,
                             painter = painterResource(id = R.drawable.ic_arrow_left),
-                            contentDescription = "Back"
+                            contentDescription = stringResource(id = R.string.back)
                         )
                     }
                     Spacer(modifier = Modifier.height(10.dp))
                     Text(
                         modifier = Modifier.fillMaxWidth(),
-                        text = "Let’s explore together!",
+                        text = stringResource(id = R.string.lets_explore_together),
                         style = h1_24_bold_fs.copy(color = Blue1A1E25)
                     )
                     Spacer(modifier = Modifier.height(15.dp))
                     Text(
-                        text = "Create your Placoo account to explore your dream place to live across the whole world!",
+                        text = stringResource(id = R.string.create_your_account_placoo),
                         style = p_16_normal_fs.copy(
                             color = Gray7D7F88,
                         )
                     )
                     Spacer(modifier = Modifier.height(40.dp))
                     Text(
-                        text = "Email",
+                        text = stringResource(id = R.string.email),
                         style = p_16_normal_fs.copy(
                             color = Blue1A1E25,
                         )
@@ -156,7 +157,7 @@ fun RegisterScreen(
                     )
                     Spacer(modifier = Modifier.height(20.dp))
                     Text(
-                        text = "Password",
+                        text = stringResource(id = R.string.password),
                         style = p_16_normal_fs.copy(
                             color = Blue1A1E25,
                         )
@@ -172,7 +173,7 @@ fun RegisterScreen(
                         passwordVisibility = passwordVisibility
                     )
                     Spacer(modifier = Modifier.height(30.dp))
-                    GradientFilledButtonLarge(text = "Create Account") {
+                    GradientFilledButtonLarge(text = stringResource(id = R.string.create_account)) {
                         onEmailErrorChange(false, "")
                         onPasswordErrorChange(false, "")
                         val canContinue: Boolean = verifyFields(

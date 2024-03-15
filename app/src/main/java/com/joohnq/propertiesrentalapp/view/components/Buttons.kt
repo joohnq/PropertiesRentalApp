@@ -7,7 +7,6 @@ import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.PaddingValues
 import androidx.compose.foundation.layout.Row
-import androidx.compose.foundation.layout.absoluteOffset
 import androidx.compose.foundation.layout.fillMaxHeight
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
@@ -21,10 +20,9 @@ import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
-import androidx.compose.ui.graphics.Brush
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.res.painterResource
-import androidx.compose.ui.text.font.FontWeight
+import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
@@ -100,11 +98,11 @@ fun AppleFilledButton(
             Icon(
                 tint = Color.White,
                 painter = painterResource(id = R.drawable.ic_apple),
-                contentDescription = "Sign in with Apple"
+                contentDescription = stringResource(id = R.string.sing_in_with_apple)
             )
             Text(
                 modifier = Modifier.fillMaxWidth(),
-                text = "Sign in with Apple",
+                text = stringResource(id = R.string.sing_in_with_apple),
                 style = p_16_medium_inter.copy(color = Color.White, textAlign = TextAlign.Center),
             )
         }
@@ -138,12 +136,12 @@ fun GoogleFilledButton(
         ) {
             Icon(
                 painter = painterResource(id = R.drawable.ic_google),
-                contentDescription = "Sign in with Google",
+                contentDescription = stringResource(id = R.string.sing_in_with_google),
                 tint = Color.Unspecified
             )
             Text(
                 modifier = Modifier.fillMaxWidth(),
-                text = "Sign in with Google",
+                text = stringResource(id = R.string.sing_in_with_google),
                 style = p_16_medium_inter.copy(color = Blue475569, textAlign = TextAlign.Center),
             )
         }
@@ -164,7 +162,7 @@ fun ForgotPasswordButton(
         onClick = onClick,
     ) {
         Text(
-            text = "Forgot password?",
+            text = stringResource(id = R.string.forgot_password),
             style = p_14_normal_fs.copy(color = Gray7D7F88, textAlign = TextAlign.Center),
         )
     }
@@ -255,7 +253,7 @@ fun ButtonPreview() {
         verticalArrangement = Arrangement.Center,
         horizontalAlignment = Alignment.CenterHorizontally
     ) {
-        GradientFilledButtonLarge(text = "Log in") {
+        GradientFilledButtonLarge(text = stringResource(id = R.string.forgot_password)) {
             println("Foi")
         }
         OutlineButtonLarge(text = "Log in") {

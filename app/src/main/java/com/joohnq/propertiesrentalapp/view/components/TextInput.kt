@@ -22,6 +22,7 @@ import androidx.compose.ui.focus.onFocusChanged
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.graphics.Shape
 import androidx.compose.ui.res.painterResource
+import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.TextStyle
 import androidx.compose.ui.text.input.ImeAction
 import androidx.compose.ui.text.input.KeyboardCapitalization
@@ -170,7 +171,7 @@ fun TextFieldEmail(
 ) {
     CustomTextFieldNormal(
         value = email,
-        placeholder = { Text("Insert your email") },
+        placeholder = { Text(stringResource(id = R.string.insert_your_email)) },
         isError = emailError,
         isErrorText = emailErrorText,
         onFocusChanged = { state: Boolean, hasFocus: Boolean ->
@@ -187,7 +188,7 @@ fun TextFieldEmail(
         leadingIcon = {
             Icon(
                 painter = painterResource(id = R.drawable.ic_user),
-                contentDescription = "Email"
+                contentDescription = stringResource(id = R.string.email)
             )
         }) { e: String -> onEmailChange(e) }
 }
@@ -204,7 +205,7 @@ fun TextFieldPassword(
 ) {
     CustomTextFieldNormal(
         value = password,
-        placeholder = { Text("Insert your password") },
+        placeholder = { Text(stringResource(id = R.string.insert_your_password)) },
         isError = passwordError,
         isErrorText = passwordErrorText,
         onFocusChanged = { state: Boolean, hasFocus: Boolean ->
@@ -227,14 +228,14 @@ fun TextFieldPassword(
             IconButton(onClick = { onPasswordVisibilityChange(!passwordVisibility) }) {
                 Icon(
                     painter = painterResource(id = if (passwordVisibility) R.drawable.ic_eye_open else R.drawable.ic_eye_close),
-                    contentDescription = "Password"
+                    contentDescription = stringResource(id = R.string.password_hide_show)
                 )
             }
         },
         leadingIcon = {
             Icon(
                 painter = painterResource(id = R.drawable.ic_key),
-                contentDescription = "Password"
+                contentDescription = stringResource(id = R.string.password)
             )
         }) { p: String -> onPasswordChange(p) }
 }
@@ -244,11 +245,18 @@ fun SearchBarWithFilter(
     text: String,
     onTextChange: (String) -> Unit,
     onFilterButtonIsClicked: () -> Unit,
+    onFocusChange: (Boolean, Boolean) -> Unit
 ) {
     CustomTextFieldNormal(
         value = text,
-        placeholder = { Text("Search address, city, location") },
+        placeholder = {
+            Text(
+                stringResource(id = R.string.search_address_city_location),
+                style = p_16_normal_fs
+            )
+        },
         onFocusChanged = { state: Boolean, hasFocus: Boolean ->
+            onFocusChange(state, hasFocus)
         },
         keyboardOptions = KeyboardOptions(
             keyboardType = KeyboardType.Text,
@@ -260,14 +268,14 @@ fun SearchBarWithFilter(
             IconButton(onClick = { onFilterButtonIsClicked }) {
                 Icon(
                     painter = painterResource(id = R.drawable.ic_filter),
-                    contentDescription = "Filter"
+                    contentDescription = stringResource(id = R.string.filter)
                 )
             }
         },
         leadingIcon = {
             Icon(
                 painter = painterResource(id = R.drawable.ic_search),
-                contentDescription = "Search"
+                contentDescription = stringResource(id = R.string.search)
             )
         }) { p: String -> onTextChange(p) }
 }
@@ -284,6 +292,6 @@ fun CustomTextFieldPreview() {
             }) {
             println("Foi")
         }
-        SearchBarWithFilter("", {}, {})
+        SearchBarWithFilter("", {}, {}, { _, _ -> })
     }
 }

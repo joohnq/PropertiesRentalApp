@@ -22,6 +22,7 @@ import androidx.compose.ui.draw.clip
 import androidx.compose.ui.draw.drawBehind
 import androidx.compose.ui.graphics.graphicsLayer
 import androidx.compose.ui.res.painterResource
+import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
@@ -105,12 +106,12 @@ fun PresentationScreen(
                 Spacer(modifier = Modifier.height(15.dp))
                 Text(
                     modifier = Modifier.fillMaxWidth(),
-                    text = "New Place, New Home!",
+                    text = stringResource(id = R.string.new_place_new_home),
                     style = h1_24_bold_fs.copy(color = Blue1A1E25, textAlign = TextAlign.Center)
                 )
                 Spacer(modifier = Modifier.height(15.dp))
                 Text(
-                    text = "Are you ready to uproot and start over in a new area? Placoo will help you on your journey!",
+                    text = stringResource(id = R.string.are_you_ready_to_uproot_start_over_in_a_new_area),
                     style = p_16_normal_fs.copy(
                         color = Gray7D7F88,
                         textAlign = TextAlign.Center
@@ -118,13 +119,13 @@ fun PresentationScreen(
                 )
                 Spacer(modifier = Modifier.height(20.dp))
                 Box(modifier = Modifier.fillMaxWidth()) {
-                    GradientFilledButtonLarge(text = "Log in") {
+                    GradientFilledButtonLarge(text = stringResource(id = R.string.login)) {
                         navController.navigate(Screen.LoginScreen.rout)
                     }
                 }
 
                 Spacer(modifier = Modifier.height(10.dp))
-                OutlineButtonLarge(text = "Sign up") {
+                OutlineButtonLarge(text = stringResource(id = R.string.signup)) {
                     navController.navigate(Screen.RegisterScreen.rout)
                 }
             }

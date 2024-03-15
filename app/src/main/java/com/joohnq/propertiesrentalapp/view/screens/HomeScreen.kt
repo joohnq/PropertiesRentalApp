@@ -32,6 +32,7 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.res.painterResource
+import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.navigation.NavController
@@ -83,7 +84,6 @@ fun HomeScreen(
 
     val location = locationViewModel?.locationName?.collectAsState()?.value
 
-    val see_all = "See all"
     val rentOrBuy: Int = mainViewModel?.rentOrBuy?.collectAsState()?.value ?: 0
     val onChangeRentOrBuy = { i: Int -> mainViewModel?.setRentOrBuy(i) }
 
@@ -250,12 +250,15 @@ fun HomeScreen(
                         Button(onClick = { userViewModel?.logout() }) {
                             Text("Sair")
                         }
-                        Text("Find your place in", style = p_14_normal_fs.copy(color = Gray7D7F88))
+                        Text(
+                            stringResource(id = R.string.find_your_place_in),
+                            style = p_14_normal_fs.copy(color = Gray7D7F88)
+                        )
                         Spacer(modifier = Modifier.height(10.dp))
                         Row {
                             Icon(
                                 painter = painterResource(id = R.drawable.ic_location_gradient),
-                                contentDescription = "Filter",
+                                contentDescription = stringResource(id = R.string.filter),
                                 tint = Color.Unspecified
                             )
                             Spacer(modifier = Modifier.width(10.dp))
@@ -283,14 +286,14 @@ fun HomeScreen(
 
                                 is UiState.Loading -> {
                                     Text(
-                                        text = "Loading...",
+                                        text = stringResource(id = R.string.loading),
                                         style = p_20_semi_bold_fs.copy(color = Blue1A1E25)
                                     )
                                 }
 
                                 else -> {
                                     Text(
-                                        "Surabaya",
+                                        stringResource(id = R.string.error),
                                         style = p_20_semi_bold_fs.copy(color = Blue1A1E25)
                                     )
                                 }
@@ -301,11 +304,12 @@ fun HomeScreen(
                         SearchBarWithFilter(
                             text = search,
                             onTextChange = onSearchChange,
-                            onFilterButtonIsClicked = {}
+                            onFilterButtonIsClicked = {},
+                            onFocusChange = { state: Boolean, hasFocus: Boolean -> }
                         )
                         Spacer(modifier = Modifier.height(10.dp))
                         Text(
-                            "What do you need?",
+                            stringResource(id = R.string.what_do_you_need),
                             style = p_18_semi_bold_fs.copy(color = Blue1A1E25)
                         )
                         Spacer(modifier = Modifier.height(15.dp))
@@ -319,7 +323,7 @@ fun HomeScreen(
                         }
                         Spacer(modifier = Modifier.height(30.dp))
                         Text(
-                            "Near your location",
+                            stringResource(id = R.string.near_your_location),
                             style = p_18_semi_bold_fs.copy(color = Blue1A1E25)
                         )
                         Row(
@@ -328,7 +332,8 @@ fun HomeScreen(
                             verticalAlignment = Alignment.Bottom
                         ) {
                             Text(
-                                "243 properties in Surabaya",
+                                "234" +
+                                        stringResource(id = R.string._properties_in_) + "Suva, Fiji",
                                 style = p_13_normal_fs.copy(color = Gray7D7F88)
                             )
                             Box(
@@ -339,7 +344,7 @@ fun HomeScreen(
                                     .padding(vertical = 3.dp, horizontal = 5.dp)
                             ) {
                                 Text(
-                                    text = see_all,
+                                    text = stringResource(id = R.string.see_all),
                                     style = p_14_medium_fs.copy(color = Gray7D7F88)
                                         .copy(brush = GradientPurpleToPurple),
                                 )
@@ -362,7 +367,7 @@ fun HomeScreen(
                             is UiState.Success -> {
                                 location.data?.let { locationName ->
                                     Text(
-                                        "Top rated in $locationName",
+                                        stringResource(id = R.string.top_rated_in) + locationName,
                                         style = p_18_semi_bold_fs.copy(color = Blue1A1E25)
                                     )
                                 }
@@ -382,14 +387,14 @@ fun HomeScreen(
 
                             is UiState.Loading -> {
                                 Text(
-                                    "Top rated near your location",
+                                    stringResource(id = R.string.top_rated_near_your_location),
                                     style = p_18_semi_bold_fs.copy(color = Blue1A1E25)
                                 )
                             }
 
                             else -> {
                                 Text(
-                                    "Top rated near your location",
+                                    stringResource(id = R.string.top_rated_near_your_location),
                                     style = p_18_semi_bold_fs.copy(color = Blue1A1E25)
                                 )
 
@@ -403,7 +408,7 @@ fun HomeScreen(
                                 .padding(vertical = 3.dp, horizontal = 5.dp)
                         ) {
                             Text(
-                                text = see_all,
+                                text = stringResource(id = R.string.see_all),
                                 style = p_14_medium_fs.copy(color = Gray7D7F88)
                                     .copy(brush = GradientPurpleToPurple),
                             )

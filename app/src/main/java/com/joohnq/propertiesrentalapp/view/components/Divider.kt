@@ -14,8 +14,10 @@ import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
+import com.joohnq.propertiesrentalapp.R
 import com.joohnq.propertiesrentalapp.view.theme.Blue1A1E25
 import com.joohnq.propertiesrentalapp.view.theme.GrayEBE8F6
 import com.joohnq.propertiesrentalapp.view.theme.Purple9E91DA
@@ -31,7 +33,7 @@ fun OrDivider() {
             color = PurpleF3F0FF,
         )
         Text(
-            text = "OR",
+            text = stringResource(id = R.string.or),
             style = p_12_semibold_inter.copy(color = Purple9E91DA),
             modifier = Modifier
                 .background(

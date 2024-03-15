@@ -31,6 +31,7 @@ import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.res.painterResource
+import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.navigation.NavController
@@ -116,25 +117,25 @@ fun LoginScreen(
                 Icon(
                     tint = Blue1A1E25,
                     painter = painterResource(id = R.drawable.ic_arrow_left),
-                    contentDescription = "Back"
+                    contentDescription = stringResource(id = R.string.back)
                 )
             }
             Spacer(modifier = Modifier.height(10.dp))
             Text(
                 modifier = Modifier.fillMaxWidth(),
-                text = "Welcome Back!",
+                text = stringResource(id = R.string.welcome_back),
                 style = h1_24_bold_fs.copy(color = Blue1A1E25)
             )
             Spacer(modifier = Modifier.height(15.dp))
             Text(
-                text = "Log In to your Placoo account to explore your dream place to live across the whole world!",
+                text = stringResource(id = R.string.log_in_to_your_placoo_account),
                 style = p_16_normal_fs.copy(
                     color = Gray7D7F88,
                 )
             )
             Spacer(modifier = Modifier.height(40.dp))
             Text(
-                text = "Email",
+                text = stringResource(id = R.string.email),
                 style = p_16_normal_fs.copy(
                     color = Blue1A1E25,
                 )
@@ -149,7 +150,7 @@ fun LoginScreen(
             )
             Spacer(modifier = Modifier.height(20.dp))
             Text(
-                text = "Password",
+                text = stringResource(id = R.string.password),
                 style = p_16_normal_fs.copy(
                     color = Blue1A1E25,
                 )
@@ -165,7 +166,7 @@ fun LoginScreen(
                 passwordVisibility = passwordVisibility
             )
             Spacer(modifier = Modifier.height(30.dp))
-            GradientFilledButtonLarge(text = "Log in") {
+            GradientFilledButtonLarge(text = stringResource(id = R.string.login)) {
                 onEmailErrorChange(false, "")
                 onPasswordErrorChange(false, "")
                 val canContinue: Boolean = verifyFields(
@@ -188,7 +189,6 @@ fun LoginScreen(
                 horizontalAlignment = Alignment.CenterHorizontally
             ) {
                 ForgotPasswordButton {
-                    println("Foi")
                 }
             }
             Spacer(modifier = Modifier.height(30.dp))
