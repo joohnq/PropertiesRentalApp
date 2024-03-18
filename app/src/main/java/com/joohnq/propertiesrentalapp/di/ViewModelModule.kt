@@ -2,9 +2,12 @@ package com.joohnq.propertiesrentalapp.di
 
 import com.joohnq.propertiesrentalapp.model.repository.FirebaseRepository
 import com.joohnq.propertiesrentalapp.model.repository.LocationRepository
+import com.joohnq.propertiesrentalapp.model.repository.PropertyRepository
 import com.joohnq.propertiesrentalapp.viewmodel.AuthViewModel
 import com.joohnq.propertiesrentalapp.viewmodel.LocationViewModel
+import com.joohnq.propertiesrentalapp.viewmodel.MainViewModel
 import com.joohnq.propertiesrentalapp.viewmodel.PermissionsViewModel
+import com.joohnq.propertiesrentalapp.viewmodel.PropertyViewModel
 import com.joohnq.propertiesrentalapp.viewmodel.UserViewModel
 import dagger.Module
 import dagger.Provides
@@ -39,4 +42,16 @@ object ViewModelModule {
     fun providePermissionsViewModel(
     ): PermissionsViewModel =
         PermissionsViewModel()
+
+    @Provides
+    fun providePropertyViewModel(
+        propertyRepository: PropertyRepository,
+        mainViewModel: MainViewModel
+    ): PropertyViewModel =
+        PropertyViewModel(propertyRepository = propertyRepository, mainViewModel = mainViewModel)
+
+    @Provides
+    fun provideMainViewModel(
+    ): MainViewModel =
+        MainViewModel()
 }
