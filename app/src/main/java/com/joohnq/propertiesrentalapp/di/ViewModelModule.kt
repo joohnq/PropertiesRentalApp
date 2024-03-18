@@ -12,12 +12,14 @@ import com.joohnq.propertiesrentalapp.viewmodel.UserViewModel
 import dagger.Module
 import dagger.Provides
 import dagger.hilt.InstallIn
-import dagger.hilt.components.SingletonComponent
+import dagger.hilt.android.components.ViewModelComponent
+import dagger.hilt.android.scopes.ViewModelScoped
 
 @Module
-@InstallIn(SingletonComponent::class)
+@InstallIn(ViewModelComponent::class)
 object ViewModelModule {
     @Provides
+    @ViewModelScoped
     fun provideUserViewModel(
         firebaseRepository: FirebaseRepository
     ): UserViewModel =
@@ -26,6 +28,7 @@ object ViewModelModule {
         )
 
     @Provides
+    @ViewModelScoped
     fun provideAuthViewModel(
         firebaseRepository: FirebaseRepository,
         userViewModel: UserViewModel
@@ -33,17 +36,20 @@ object ViewModelModule {
         AuthViewModel(firebaseRepository = firebaseRepository, userViewModel = userViewModel)
 
     @Provides
+    @ViewModelScoped
     fun provideLocationViewModel(
         locationRepository: LocationRepository,
     ): LocationViewModel =
         LocationViewModel(locationRepository = locationRepository)
 
     @Provides
+    @ViewModelScoped
     fun providePermissionsViewModel(
     ): PermissionsViewModel =
         PermissionsViewModel()
 
     @Provides
+    @ViewModelScoped
     fun providePropertyViewModel(
         propertyRepository: PropertyRepository,
         mainViewModel: MainViewModel
@@ -51,6 +57,7 @@ object ViewModelModule {
         PropertyViewModel(propertyRepository = propertyRepository, mainViewModel = mainViewModel)
 
     @Provides
+    @ViewModelScoped
     fun provideMainViewModel(
     ): MainViewModel =
         MainViewModel()

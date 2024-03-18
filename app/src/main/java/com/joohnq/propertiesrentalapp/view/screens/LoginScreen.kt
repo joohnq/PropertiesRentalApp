@@ -1,12 +1,8 @@
 package com.joohnq.propertiesrentalapp.view.screens
 
 import UiState
-import androidx.activity.compose.rememberLauncherForActivityResult
-import androidx.activity.result.ActivityResult
+import androidx.activity.result.ActivityResultLauncher
 import androidx.activity.result.IntentSenderRequest
-import androidx.activity.result.contract.ActivityResultContracts
-import androidx.compose.foundation.background
-import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.PaddingValues
 import androidx.compose.foundation.layout.Spacer
@@ -34,6 +30,7 @@ import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
+import androidx.lifecycle.viewmodel.compose.viewModel
 import androidx.navigation.NavController
 import androidx.navigation.compose.rememberNavController
 import com.joohnq.propertiesrentalapp.R
@@ -52,30 +49,20 @@ import com.joohnq.propertiesrentalapp.view.components.h1_24_bold_fs
 import com.joohnq.propertiesrentalapp.view.components.p_16_normal_fs
 import com.joohnq.propertiesrentalapp.view.theme.Blue1A1E25
 import com.joohnq.propertiesrentalapp.view.theme.Gray7D7F88
-import com.joohnq.propertiesrentalapp.view.theme.GrayFCFCFC
 import com.joohnq.propertiesrentalapp.viewmodel.AuthViewModel
+import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.launch
 
 @Composable
 fun LoginScreen(
+    scope: CoroutineScope = rememberCoroutineScope(),
+    snackBarHostState: SnackbarHostState = remember { SnackbarHostState() },
     authViewModel: AuthViewModel?,
     googleAuthUiClient: GoogleAuthUiClient?,
-    handleGoogleAuthResult: (ActivityResult, () -> Unit) -> Unit,
-    navController: NavController,
-    padding: PaddingValues = PaddingValues(0.dp)
+    launcher: ActivityResultLauncher<IntentSenderRequest>? = null,
+    navController: NavController = rememberNavController(),
+    padding: PaddingValues = PaddingValues(16.dp)
 ) {
-    val scope = rememberCoroutineScope()
-    val snackBarHostState = remember { SnackbarHostState() }
-
-    val launcher = rememberLauncherForActivityResult(
-        ActivityResultContracts.StartIntentSenderForResult()
-    ) { result ->
-        handleGoogleAuthResult(result) {
-            authViewModel?.setGoogle(UiState.None)
-        }
-    }
-
-
     val login = authViewModel?.login?.collectAsState()?.value
     val google = authViewModel?.google?.collectAsState()?.value
 
@@ -102,162 +89,166 @@ fun LoginScreen(
     var passwordVisibility: Boolean by remember { mutableStateOf(false) }
     val onPasswordVisibilityChange = { v: Boolean -> passwordVisibility = v }
 
-    Box(modifier = Modifier.background(color = GrayFCFCFC)) {
-        Column(
+    Column(
+        modifier = Modifier
+            .padding(padding)
+            .verticalScroll(rememberScrollState())
+    ) {
+        IconButton(
             modifier = Modifier
-                .padding(padding)
-                .verticalScroll(rememberScrollState())
+                .width(50.dp)
+                .height(50.dp),
+            onClick = { navController.popBackStack() }
         ) {
-            IconButton(
-                modifier = Modifier
-                    .width(50.dp)
-                    .height(50.dp),
-                onClick = { navController.popBackStack() }
-            ) {
-                Icon(
-                    tint = Blue1A1E25,
-                    painter = painterResource(id = R.drawable.ic_arrow_left),
-                    contentDescription = stringResource(id = R.string.back)
-                )
-            }
-            Spacer(modifier = Modifier.height(10.dp))
-            Text(
-                modifier = Modifier.fillMaxWidth(),
-                text = stringResource(id = R.string.welcome_back),
-                style = h1_24_bold_fs.copy(color = Blue1A1E25)
+            Icon(
+                tint = Blue1A1E25,
+                painter = painterResource(id = R.drawable.ic_arrow_left),
+                contentDescription = stringResource(id = R.string.back)
             )
-            Spacer(modifier = Modifier.height(15.dp))
-            Text(
-                text = stringResource(id = R.string.log_in_to_your_placoo_account),
-                style = p_16_normal_fs.copy(
-                    color = Gray7D7F88,
-                )
+        }
+        Spacer(modifier = Modifier.height(10.dp))
+        Text(
+            modifier = Modifier.fillMaxWidth(),
+            text = stringResource(id = R.string.welcome_back),
+            style = h1_24_bold_fs.copy(color = Blue1A1E25)
+        )
+        Spacer(modifier = Modifier.height(15.dp))
+        Text(
+            text = stringResource(id = R.string.log_in_to_your_placoo_account),
+            style = p_16_normal_fs.copy(
+                color = Gray7D7F88,
             )
-            Spacer(modifier = Modifier.height(40.dp))
-            Text(
-                text = stringResource(id = R.string.email),
-                style = p_16_normal_fs.copy(
-                    color = Blue1A1E25,
-                )
+        )
+        Spacer(modifier = Modifier.height(40.dp))
+        Text(
+            text = stringResource(id = R.string.email),
+            style = p_16_normal_fs.copy(
+                color = Blue1A1E25,
             )
-            Spacer(modifier = Modifier.height(10.dp))
-            TextFieldEmail(
+        )
+        Spacer(modifier = Modifier.height(10.dp))
+        TextFieldEmail(
+            email = email,
+            onEmailChange = onEmailChange,
+            onEmailErrorChange = onEmailErrorChange,
+            emailError = emailError,
+            emailErrorText = emailErrorText
+        )
+        Spacer(modifier = Modifier.height(20.dp))
+        Text(
+            text = stringResource(id = R.string.password),
+            style = p_16_normal_fs.copy(
+                color = Blue1A1E25,
+            )
+        )
+        Spacer(modifier = Modifier.height(10.dp))
+        TextFieldPassword(
+            password = password,
+            onPasswordChange = onPasswordChange,
+            onPasswordErrorChange = onPasswordErrorChange,
+            passwordError = passwordError,
+            passwordErrorText = passwordErrorText,
+            onPasswordVisibilityChange = onPasswordVisibilityChange,
+            passwordVisibility = passwordVisibility
+        )
+        Spacer(modifier = Modifier.height(30.dp))
+        GradientFilledButtonLarge(text = stringResource(id = R.string.login)) {
+            onEmailErrorChange(false, "")
+            onPasswordErrorChange(false, "")
+            val canContinue: Boolean = verifyFields(
                 email = email,
-                onEmailChange = onEmailChange,
-                onEmailErrorChange = onEmailErrorChange,
-                emailError = emailError,
-                emailErrorText = emailErrorText
-            )
-            Spacer(modifier = Modifier.height(20.dp))
-            Text(
-                text = stringResource(id = R.string.password),
-                style = p_16_normal_fs.copy(
-                    color = Blue1A1E25,
-                )
-            )
-            Spacer(modifier = Modifier.height(10.dp))
-            TextFieldPassword(
                 password = password,
-                onPasswordChange = onPasswordChange,
-                onPasswordErrorChange = onPasswordErrorChange,
-                passwordError = passwordError,
-                passwordErrorText = passwordErrorText,
-                onPasswordVisibilityChange = onPasswordVisibilityChange,
-                passwordVisibility = passwordVisibility
-            )
-            Spacer(modifier = Modifier.height(30.dp))
-            GradientFilledButtonLarge(text = stringResource(id = R.string.login)) {
-                onEmailErrorChange(false, "")
-                onPasswordErrorChange(false, "")
-                val canContinue: Boolean = verifyFields(
-                    email = email,
-                    password = password,
-                    origin = Origin.LOGIN,
-                    onEmailError = { state: Boolean, msn: String ->
-                        onEmailErrorChange(state, msn)
-                    },
-                    onPasswordError = { state: Boolean, msn: String ->
-                        onPasswordErrorChange(state, msn)
-                    })
+                origin = Origin.LOGIN,
+                onEmailError = { state: Boolean, msn: String ->
+                    onEmailErrorChange(state, msn)
+                },
+                onPasswordError = { state: Boolean, msn: String ->
+                    onPasswordErrorChange(state, msn)
+                })
 
-                if (canContinue)
-                    authViewModel?.signInWithEmailAndPassword(email, password)
+            if (canContinue)
+                authViewModel?.signInWithEmailAndPassword(email, password)
+        }
+        Spacer(modifier = Modifier.height(10.dp))
+        Column(
+            modifier = Modifier.fillMaxWidth(),
+            horizontalAlignment = Alignment.CenterHorizontally
+        ) {
+            ForgotPasswordButton {
             }
-            Spacer(modifier = Modifier.height(10.dp))
-            Column(
-                modifier = Modifier.fillMaxWidth(),
-                horizontalAlignment = Alignment.CenterHorizontally
-            ) {
-                ForgotPasswordButton {
-                }
+        }
+        Spacer(modifier = Modifier.height(30.dp))
+        OrDivider()
+        Spacer(modifier = Modifier.height(30.dp))
+        GoogleFilledButton {
+            scope.launch {
+                authViewModel?.setGoogle(UiState.Loading)
+                val signInIntentSender = googleAuthUiClient?.getIntentSender()
+                launcher?.launch(
+                    IntentSenderRequest.Builder(
+                        signInIntentSender ?: return@launch
+                    ).build()
+                )
             }
-            Spacer(modifier = Modifier.height(30.dp))
-            OrDivider()
-            Spacer(modifier = Modifier.height(30.dp))
-            GoogleFilledButton {
+        }
+    }
+    when (login) {
+        is UiState.Success -> {
+            LoadingPage(isLoading = false)
+            navController.navigate(Screen.HomeScreen.rout)
+            authViewModel.setLogin(UiState.None)
+        }
+
+        is UiState.Failure -> {
+            LoadingPage(isLoading = false)
+            login.error?.let { error ->
                 scope.launch {
-                    authViewModel?.setGoogle(UiState.Loading)
-                    val signInIntentSender = googleAuthUiClient?.getIntentSender()
-                    launcher.launch(
-                        IntentSenderRequest.Builder(
-                            signInIntentSender ?: return@launch
-                        ).build()
-                    )
+                    snackBarHostState
+                        .showSnackbar(
+                            message = error,
+                            duration = SnackbarDuration.Short
+                        )
                 }
             }
         }
-        when (login) {
-            is UiState.Success -> {
-                LoadingPage(isLoading = false)
-                navController.navigate(Screen.HomeScreen.rout)
-                authViewModel.setLogin(UiState.None)
-            }
 
-            is UiState.Failure -> {
-                LoadingPage(isLoading = false)
-                login.error?.let { error ->
-                    scope.launch {
-                        snackBarHostState
-                            .showSnackbar(
-                                message = error,
-                                duration = SnackbarDuration.Short
-                            )
-                    }
+        is UiState.Loading -> LoadingPage(isLoading = true)
+        else -> Unit
+    }
+    when (google) {
+        is UiState.Success -> {
+            LoadingPage(isLoading = false)
+            navController.navigate(Screen.HomeScreen.rout)
+            authViewModel.setGoogle(UiState.None)
+        }
+
+        is UiState.Failure -> {
+            LoadingPage(isLoading = false)
+            google.error?.let { error ->
+                scope.launch {
+                    snackBarHostState
+                        .showSnackbar(
+                            message = error,
+                            duration = SnackbarDuration.Short
+                        )
                 }
             }
-
-            is UiState.Loading -> LoadingPage(isLoading = true)
-            else -> Unit
         }
-        when (google) {
-            is UiState.Success -> {
-                LoadingPage(isLoading = false)
-                navController.navigate(Screen.HomeScreen.rout)
-                authViewModel.setGoogle(UiState.None)
-            }
 
-            is UiState.Failure -> {
-                LoadingPage(isLoading = false)
-                google.error?.let { error ->
-                    scope.launch {
-                        snackBarHostState
-                            .showSnackbar(
-                                message = error,
-                                duration = SnackbarDuration.Short
-                            )
-                    }
-                }
-            }
-
-            is UiState.Loading -> LoadingPage(isLoading = true)
-            else -> Unit
-        }
+        is UiState.Loading -> LoadingPage(isLoading = true)
+        else -> Unit
     }
 }
 
-@Preview(showBackground = true)
+@Preview(
+    showBackground = true,
+)
 @Composable
-fun LoginPreview() {
-    val navController = rememberNavController()
-    LoginScreen(null, null, handleGoogleAuthResult = { _, _ -> }, navController)
+fun LoginPreview(
+) {
+    LoginScreen(
+        googleAuthUiClient = null,
+        launcher = null,
+        authViewModel = null
+    )
 }

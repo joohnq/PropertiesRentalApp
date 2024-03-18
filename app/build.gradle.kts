@@ -54,54 +54,59 @@ android {
 }
 
 dependencies {
-    val koin_version = "3.5.3"
-    val coroutines_version = "1.7.3"
-    val okhttp_version = "4.12.0"
-    val navigation_compose_version = "2.7.7"
-    val compose_bom_version = "2024.02.02"
-    val hilt_version = "2.51"
-    val hilt_navigation_version = "1.2.0"
+    val coroutineVersion = "1.7.3"
+    val navigationComposeVersion = "2.7.7"
+    val composeBomVersion = "2024.02.02"
+    val hiltVersion = "2.51"
+    val retrofitVersion = "2.9.0"
+    val gsonVersion = "2.10.1"
+    val coilVersion = "2.4.0"
+    val splashVersion = "1.0.1"
+    val loaderVersion = "1.0.4"
+    val roomVersion = "2.6.1"
 
-    implementation("io.coil-kt:coil-compose:2.4.0")
+    //ROOM
+    implementation("androidx.room:room-runtime:$roomVersion")
+    annotationProcessor("androidx.room:room-compiler:$roomVersion")
+    kapt("androidx.room:room-compiler:$roomVersion")
+    implementation("androidx.room:room-ktx:$roomVersion")
 
-    implementation("com.google.accompanist:accompanist-permissions:0.28.0")
+    implementation("io.coil-kt:coil-compose:$coilVersion")
 
     implementation("com.google.android.gms:play-services-location:21.2.0")
 
     // Splash API
-    implementation("androidx.core:core-splashscreen:1.0.1")
+    implementation("androidx.core:core-splashscreen:$splashVersion")
 
     //Loader
-    implementation("com.github.commandiron:ComposeLoading:1.0.4")
+    implementation("com.github.commandiron:ComposeLoading:$loaderVersion")
 
     //FIREBASE
     implementation(platform("com.google.firebase:firebase-bom:32.7.4"))
     implementation("com.google.firebase:firebase-firestore")
-    implementation(platform("androidx.compose:compose-bom:$compose_bom_version"))
-    implementation("androidx.navigation:navigation-compose:$navigation_compose_version")
-    androidTestImplementation(platform("androidx.compose:compose-bom:$compose_bom_version"))
+    implementation(platform("androidx.compose:compose-bom:$composeBomVersion"))
+    implementation("androidx.navigation:navigation-compose:$navigationComposeVersion")
+    androidTestImplementation(platform("androidx.compose:compose-bom:$composeBomVersion"))
     implementation("com.google.firebase:firebase-auth")
     implementation("com.google.firebase:firebase-auth-ktx")
     implementation("com.google.android.gms:play-services-auth:21.0.0")
     implementation("com.google.firebase:firebase-analytics")
 
-    //OkHTTP
-    implementation("com.squareup.okhttp3:okhttp:$okhttp_version")
-    implementation(platform("com.squareup.okhttp3:okhttp-bom:$okhttp_version"))
-    implementation("com.squareup.okhttp3:okhttp")
-    implementation("com.squareup.okhttp3:logging-interceptor")
-
     //COROUTINES
-    implementation("org.jetbrains.kotlinx:kotlinx-coroutines-android:$coroutines_version")
+    implementation("org.jetbrains.kotlinx:kotlinx-coroutines-android:$coroutineVersion")
+
+    implementation("com.squareup.retrofit2:retrofit:$retrofitVersion")
+    implementation("com.squareup.retrofit2:converter-gson:$retrofitVersion")
+    implementation("com.google.code.gson:gson:$gsonVersion")
 
     //HILT
-    implementation("com.google.dagger:hilt-android:$hilt_version")
-    kapt("com.google.dagger:hilt-compiler:$hilt_version")
+    implementation("com.google.dagger:hilt-android:$hiltVersion")
+    kapt("com.google.dagger:hilt-compiler:$hiltVersion")
 
     implementation("androidx.core:core-ktx:1.12.0")
     implementation("androidx.lifecycle:lifecycle-runtime-ktx:2.7.0")
     implementation("androidx.activity:activity-compose:1.8.2")
-    implementation(platform("androidx.compose:compose-bom:$compose_bom_version"))
+    implementation(platform("androidx.compose:compose-bom:$composeBomVersion"))
     implementation("androidx.compose.ui:ui")
     implementation("androidx.compose.ui:ui-graphics")
     implementation("androidx.compose.ui:ui-tooling-preview")
@@ -109,7 +114,7 @@ dependencies {
     testImplementation("junit:junit:4.13.2")
     androidTestImplementation("androidx.test.ext:junit:1.1.5")
     androidTestImplementation("androidx.test.espresso:espresso-core:3.5.1")
-    androidTestImplementation(platform("androidx.compose:compose-bom:$compose_bom_version"))
+    androidTestImplementation(platform("androidx.compose:compose-bom:$composeBomVersion"))
     androidTestImplementation("androidx.compose.ui:ui-test-junit4")
     debugImplementation("androidx.compose.ui:ui-tooling")
     debugImplementation("androidx.compose.ui:ui-test-manifest")

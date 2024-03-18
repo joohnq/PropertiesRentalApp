@@ -18,7 +18,7 @@
         android:theme="@style/Theme.PropertiesRentalApp"
         tools:targetApi="31">
         <activity
-            android:name=".view.activities.NavHostActivity"
+            android:name=".view.activities.MainActivity"
             android:exported="true"
             android:theme="@style/Theme.PropertiesRentalApp">
             <intent-filter>

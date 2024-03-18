@@ -14,4 +14,9 @@ object Constants {
 
     const val FIREBASE_USERS = "users"
 
+    const val RETROFIT_PATH_HOME_PROPERTIES = "listhomes"
+    const val RETROFIT_URL_BASE = "https://idealista7.p.rapidapi.com/"
+
+    const val DATABASE_TABLE_HOME_PROPERTIES = "home_properties"
+
 }
