@@ -7,9 +7,7 @@ import com.joohnq.propertiesrentalapp.view.theme.PropertiesRentalAppTheme
 
 @Composable
 fun LoadingScreen() {
-    PropertiesRentalAppTheme {
-        LoadingPage(isLoading = true)
-    }
+    LoadingPage(isLoading = true)
 }
 
 @Preview(showBackground = true)

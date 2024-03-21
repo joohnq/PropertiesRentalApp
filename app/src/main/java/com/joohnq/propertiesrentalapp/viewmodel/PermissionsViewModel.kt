@@ -17,7 +17,6 @@ class PermissionsViewModel @Inject constructor() : ViewModel() {
         permission: String,
         isGranted: Boolean
     ) {
-        println("onPermissionResult: $permission, $isGranted, ${visiblePermissionDialogQueue.contains(permission)}")
         if (!isGranted && !visiblePermissionDialogQueue.contains(permission)) {
             visiblePermissionDialogQueue.add(permission)
         }

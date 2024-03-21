@@ -1,5 +1,6 @@
 package com.joohnq.propertiesrentalapp.di
 
+import com.google.android.gms.location.FusedLocationProviderClient
 import com.joohnq.propertiesrentalapp.model.repository.FirebaseRepository
 import com.joohnq.propertiesrentalapp.model.repository.LocationRepository
 import com.joohnq.propertiesrentalapp.model.repository.PropertyRepository
@@ -39,8 +40,12 @@ object ViewModelModule {
     @ViewModelScoped
     fun provideLocationViewModel(
         locationRepository: LocationRepository,
+        fusedLocationClient: FusedLocationProviderClient
     ): LocationViewModel =
-        LocationViewModel(locationRepository = locationRepository)
+        LocationViewModel(
+            locationRepository = locationRepository,
+            fusedLocationClient = fusedLocationClient
+        )
 
     @Provides
     @ViewModelScoped
@@ -52,9 +57,14 @@ object ViewModelModule {
     @ViewModelScoped
     fun providePropertyViewModel(
         propertyRepository: PropertyRepository,
+        locationViewModel: LocationViewModel,
         mainViewModel: MainViewModel
     ): PropertyViewModel =
-        PropertyViewModel(propertyRepository = propertyRepository, mainViewModel = mainViewModel)
+        PropertyViewModel(
+            propertyRepository = propertyRepository,
+            locationViewModel = locationViewModel,
+            mainViewModel = mainViewModel
+        )
 
     @Provides
     @ViewModelScoped

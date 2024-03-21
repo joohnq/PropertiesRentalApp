@@ -24,7 +24,7 @@ import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import com.joohnq.propertiesrentalapp.R
-import com.joohnq.propertiesrentalapp.model.entities.Operation
+import com.joohnq.propertiesrentalapp.model.entities.Section
 import com.joohnq.propertiesrentalapp.view.theme.Blue1A1E25
 import com.joohnq.propertiesrentalapp.view.theme.Gray434343
 import com.joohnq.propertiesrentalapp.view.theme.Gray7D7F88
@@ -35,10 +35,10 @@ fun PropertyItemComplete(
     image: String,
     title: String,
     location: String,
-    size: Double,
+    size: String,
     rooms: Int,
     price: String,
-    operation: Operation
+    section: String
 ) {
     val shape = RoundedCornerShape(10.dp)
     Card(
@@ -89,7 +89,7 @@ fun PropertyItemComplete(
                         )
                     }
                     Spacer(modifier = Modifier.width(10.dp))
-                    Row() {
+                    Row{
                         Icon(
                             painter = painterResource(id = R.drawable.ic_size),
                             contentDescription = stringResource(id = R.string.filter),
@@ -97,16 +97,23 @@ fun PropertyItemComplete(
                         )
                         Spacer(modifier = Modifier.width(3.dp))
                         Text(
-                            text = size.toString() + stringResource(id = R.string.m2),
+                            text = size + stringResource(id = R.string.m2),
                             style = p_13_normal_fs.copy(color = Gray7D7F88)
                         )
                     }
                 }
                 Spacer(modifier = Modifier.height(20.dp))
                 Row(modifier = Modifier.fillMaxWidth(), verticalAlignment = Alignment.Bottom) {
-                    Text(text = stringResource(id = R.string.price) + price, style = p_18_bold_inter.copy(color = Blue1A1E25))
-                    if (operation == Operation.rent) {
-                        Text(text = stringResource(id = R.string.por_month), style = p_12_medium_inter.copy(color = Gray7D7F88))
+                    Text(
+                        text = stringResource(id = R.string.price) + price,
+                        style = p_18_bold_inter.copy(color = Blue1A1E25)
+                    )
+                    if (section == Section.TO_RENT) {
+                        Spacer(modifier = Modifier.width(10.dp))
+                        Text(
+                            text = stringResource(id = R.string.por_month),
+                            style = p_12_medium_inter.copy(color = Gray7D7F88)
+                        )
                     }
                 }
             }
@@ -117,5 +124,5 @@ fun PropertyItemComplete(
 @Preview(showBackground = true)
 @Composable
 fun PropertyItemCompletePreview() {
-    PropertyItemComplete("Title", "Location", "", 123.00, 123, "123", Operation.rent)
+    PropertyItemComplete("Title", "Location", "", "123.00", 123, "123", Section.TO_RENT)
 }

@@ -29,6 +29,7 @@ fun PermissionDialog(
                 } else {
                     onOkClick()
                 }
+                onDismiss()
             }
         },
         title = { Text(stringResource(id = R.string.permission_required), style = h1_24_bold_fs) },

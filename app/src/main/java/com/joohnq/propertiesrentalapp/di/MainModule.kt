@@ -4,6 +4,8 @@ import android.content.Context
 import android.location.Geocoder
 import com.google.android.gms.auth.api.identity.Identity
 import com.google.android.gms.auth.api.identity.SignInClient
+import com.google.android.gms.location.FusedLocationProviderClient
+import com.google.android.gms.location.LocationServices
 import com.google.firebase.auth.FirebaseAuth
 import com.joohnq.propertiesrentalapp.google.GoogleAuthUiClient
 import com.joohnq.propertiesrentalapp.model.services.PropertyDataSource
@@ -29,6 +31,13 @@ object MainModule {
     @Provides
     @Singleton
     fun provideCoroutineScope(): CoroutineScope = CoroutineScope(SupervisorJob() + Dispatchers.IO)
+
+    @Provides
+    @Singleton
+    fun provideFusedLocationProviderClient(
+        @ApplicationContext context: Context
+    ): FusedLocationProviderClient =
+        LocationServices.getFusedLocationProviderClient(context)
 
     @Provides
     @Singleton

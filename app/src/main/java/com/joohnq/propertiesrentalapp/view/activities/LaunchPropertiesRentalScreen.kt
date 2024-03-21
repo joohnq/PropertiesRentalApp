@@ -2,11 +2,14 @@ package com.joohnq.propertiesrentalapp.view.activities
 
 import UiState
 import android.app.Activity
-import android.location.Location
 import androidx.activity.result.ActivityResultLauncher
 import androidx.activity.result.IntentSenderRequest
 import androidx.compose.foundation.background
+import androidx.compose.foundation.layout.Arrangement
+import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.fillMaxSize
+import androidx.compose.foundation.layout.fillMaxWidth
+import androidx.compose.foundation.layout.heightIn
 import androidx.compose.foundation.layout.padding
 import androidx.compose.material3.Scaffold
 import androidx.compose.material3.SnackbarHostState
@@ -15,20 +18,22 @@ import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableIntStateOf
+import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
 import androidx.compose.runtime.rememberCoroutineScope
 import androidx.compose.runtime.saveable.rememberSaveable
 import androidx.compose.runtime.setValue
+import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.unit.dp
 import androidx.core.app.ActivityCompat.shouldShowRequestPermissionRationale
-import androidx.lifecycle.viewmodel.compose.viewModel
 import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
 import androidx.navigation.compose.rememberNavController
+import com.commandiron.compose_loading.Circle
 import com.google.android.gms.location.FusedLocationProviderClient
-import com.google.android.gms.tasks.Task
 import com.joohnq.propertiesrentalapp.google.GoogleAuthUiClient
+import com.joohnq.propertiesrentalapp.model.entities.AutoCompleteRequest
 import com.joohnq.propertiesrentalapp.view.Screen
 import com.joohnq.propertiesrentalapp.view.activities.ui.theme.PropertiesRentalAppTheme
 import com.joohnq.propertiesrentalapp.view.components.CustomSnackBarHost
@@ -44,10 +49,12 @@ import com.joohnq.propertiesrentalapp.view.screens.ProfileScreen
 import com.joohnq.propertiesrentalapp.view.screens.RegisterScreen
 import com.joohnq.propertiesrentalapp.view.screens.SavedScreen
 import com.joohnq.propertiesrentalapp.view.theme.GrayFCFCFC
+import com.joohnq.propertiesrentalapp.view.theme.Purple6246EA
 import com.joohnq.propertiesrentalapp.viewmodel.AuthViewModel
 import com.joohnq.propertiesrentalapp.viewmodel.LocationViewModel
 import com.joohnq.propertiesrentalapp.viewmodel.MainViewModel
 import com.joohnq.propertiesrentalapp.viewmodel.PermissionsViewModel
+import com.joohnq.propertiesrentalapp.viewmodel.PropertyViewModel
 import com.joohnq.propertiesrentalapp.viewmodel.UserViewModel
 import kotlinx.coroutines.flow.collectLatest
 import kotlinx.coroutines.launch
@@ -56,12 +63,13 @@ import kotlinx.coroutines.launch
 fun LaunchPropertiesRentalScreen(
     activity: Activity,
     openAppSettings: () -> Unit,
-    location: Task<Location>,
+    fusedLocationClient: FusedLocationProviderClient,
     mainViewModel: MainViewModel,
     authViewModel: AuthViewModel,
     permissionsViewModel: PermissionsViewModel,
     locationViewModel: LocationViewModel,
     userViewModel: UserViewModel,
+    propertyViewModel: PropertyViewModel,
     googleAuthUiClient: GoogleAuthUiClient,
     executeMultiplePermission: () -> Unit = { },
     launcher: ActivityResultLauncher<IntentSenderRequest>,
@@ -69,10 +77,8 @@ fun LaunchPropertiesRentalScreen(
     val scope = rememberCoroutineScope()
     val snackBarHostState = remember { SnackbarHostState() }
     val navController = rememberNavController()
-    val currentNavDestination = navController.currentDestination?.route
-    var selectedItemBottomBar by rememberSaveable {
-        mutableIntStateOf(0)
-    }
+    val currentNavDestination = remember { mutableStateOf(navController.currentDestination?.route) }
+    var selectedItemBottomBar by rememberSaveable { mutableIntStateOf(0) }
     val onChangeBottomBar = { index: Int -> selectedItemBottomBar = index }
     val dialogQueue = permissionsViewModel.visiblePermissionDialogQueue
     val user by userViewModel.user.collectAsState()
@@ -85,6 +91,24 @@ fun LaunchPropertiesRentalScreen(
         Screen.SavedScreen.rout,
         Screen.ProfileScreen.rout
     )
+    val location by locationViewModel.locationName.collectAsState()
+//    val (nearYourLocation, setNearYourLocation) = rememberSaveable { mutableStateOf<UiState<List<Home>>>(UiState.None) }
+    val autoCompleteLocation by propertyViewModel.autoCompleteLocation.collectAsState()
+    val nearYourLocation by propertyViewModel.nearYourLocationProperties.collectAsState()
+    val rentOrBuy by mainViewModel.rentOrBuy.collectAsState()
+    val onChangeRentOrBuy = { i: Int -> mainViewModel.setRentOrBuy(i) }
+    val error = remember { mutableStateOf("") }
+    val onErrorAction = { s: String -> error.value = s }
+
+
+    LaunchedEffect(error) {
+        if(error.value.isNotEmpty()){
+            scope.launch {
+                snackBarHostState.showSnackbar(error.value)
+            }
+        }
+    }
+
     dialogQueue.reversed().forEach { permission ->
         PermissionDialog(
             permission = permission,
@@ -104,32 +128,45 @@ fun LaunchPropertiesRentalScreen(
     }
 
     LaunchedEffect(Unit) {
-        coroutineScope.launch {
-            userViewModel.getUserFromDatabase()
-            executeMultiplePermission()
-            location.addOnSuccessListener { location: Location ->
-                locationViewModel.getLocationName(location)
-                println("LOCATION: $location")
-            }
-        }
+        userViewModel.getUserFromDatabase()
+        executeMultiplePermission()
+        propertyViewModel.getAutoComplete()
     }
 
-    LaunchedEffect(user) {
-        coroutineScope.launch {
-            userViewModel.user.collectLatest { user ->
-                navController.navigate(
-                    when (user) {
-                        is UiState.Loading -> Screen.LoadingScreen.rout
-                        is UiState.Success -> Screen.HomeScreen.rout
-                        is UiState.Failure -> {
-                            Screen.PresentationScreen.rout
-                        }
-
-                        else -> Screen.PresentationScreen.rout
+    when (val state = autoCompleteLocation) {
+        is UiState.Success -> {
+            LaunchedEffect(Unit) {
+                println("Executouuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuu")
+                state.data?.let { autoCompleteRequest: AutoCompleteRequest ->
+                    val payLoad = autoCompleteRequest.payload
+                    payLoad?.run {
+                        val regionId: String = payLoad.sections?.get(0)?.rows?.get(0)?.id ?: ""
+                        val id = regionId.split("_")[1].toInt()
+                        propertyViewModel.getNearYourLocationProperties(id)
                     }
-                )
+                }
             }
         }
+
+        is UiState.Loading -> {
+            Row(
+                horizontalArrangement = Arrangement.Center,
+                verticalAlignment = Alignment.CenterVertically,
+                modifier = Modifier
+                    .heightIn(min = 100.dp)
+                    .fillMaxWidth()
+            ) {
+                Circle(size = 30.dp, color = Purple6246EA)
+            }
+        }
+
+        is UiState.Failure -> {
+            state.error?.let { e ->
+                onErrorAction(e)
+            }
+        }
+
+        else -> Unit
     }
 
     PropertiesRentalAppTheme {
@@ -140,7 +177,7 @@ fun LaunchPropertiesRentalScreen(
                 .background(color = GrayFCFCFC)
                 .padding(16.dp),
             bottomBar = {
-                if (permitBottomBar.contains(currentNavDestination))
+                if (permitBottomBar.contains(currentNavDestination.value))
                     MainBottomNavigation(
                         navController = navController,
                         selectedItem = selectedItemBottomBar,
@@ -151,6 +188,9 @@ fun LaunchPropertiesRentalScreen(
             NavHost(
                 navController = navController, startDestination = startDestination
             ) {
+                navController.addOnDestinationChangedListener { _, destination, _ ->
+                    currentNavDestination.value = destination.route ?: ""
+                }
                 composable(Screen.PresentationScreen.rout) {
                     PresentationScreen(
                         padding = padding,
@@ -182,13 +222,22 @@ fun LaunchPropertiesRentalScreen(
                 }
                 composable(Screen.HomeScreen.rout) {
                     HomeScreen(
+                        rentOrBuy = rentOrBuy,
+                        location = location,
+                        nearYourLocation = nearYourLocation,
+                        autoCompleteLocation = autoCompleteLocation,
+                        context = activity,
                         scope = scope,
+                        fusedLocationClient = fusedLocationClient,
                         snackBarHostState = snackBarHostState,
                         padding = padding,
                         mainViewModel = mainViewModel,
                         userViewModel = userViewModel,
                         locationViewModel = locationViewModel,
+                        propertyViewModel = propertyViewModel,
                         navController = navController,
+                        onChangeRentOrBuy = onChangeRentOrBuy,
+                        onErrorAction = onErrorAction
                     )
                 }
                 composable(Screen.LoadingScreen.rout) {
@@ -229,4 +278,23 @@ fun LaunchPropertiesRentalScreen(
             }
         }
     }
+
+    LaunchedEffect(user) {
+        coroutineScope.launch {
+            userViewModel.user.collectLatest { user ->
+                navController.navigate(
+                    when (user) {
+                        is UiState.Loading -> Screen.LoadingScreen.rout
+                        is UiState.Success -> Screen.HomeScreen.rout
+                        is UiState.Failure -> {
+                            Screen.PresentationScreen.rout
+                        }
+
+                        else -> Screen.PresentationScreen.rout
+                    }
+                )
+            }
+        }
+    }
+
 }

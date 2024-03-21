@@ -1,6 +1,5 @@
 package com.joohnq.propertiesrentalapp.di
 
-import android.content.Context
 import android.location.Geocoder
 import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.firestore.FirebaseFirestore
@@ -16,7 +15,6 @@ import com.joohnq.propertiesrentalapp.model.services.PropertyDataSource
 import dagger.Module
 import dagger.Provides
 import dagger.hilt.InstallIn
-import dagger.hilt.android.qualifiers.ApplicationContext
 import dagger.hilt.components.SingletonComponent
 import kotlinx.coroutines.CoroutineScope
 import javax.inject.Singleton
@@ -29,10 +27,8 @@ object RepositoryModule {
     @Singleton
     fun provideLocationRepository(
         geocoder: Geocoder,
-        @ApplicationContext context: Context,
     ): LocationRepository = LocationRepositoryImpl(
         geocoder = geocoder,
-        context = context
     )
 
     @Provides
@@ -58,7 +54,6 @@ object RepositoryModule {
         scope: CoroutineScope,
         propertyDataSource: PropertyDataSource
     ): PropertyRepository = PropertyRepositoryImpl(
-        scope = scope,
         propertyDataSource = propertyDataSource
     )
 

@@ -5,6 +5,9 @@ plugins {
 
     kotlin("kapt")
     id("com.google.dagger.hilt.android")
+
+//    kotlin("jvm") version "1.9.23"
+    kotlin("plugin.serialization") version "1.9.23"
 }
 
 android {
@@ -64,6 +67,8 @@ dependencies {
     val splashVersion = "1.0.1"
     val loaderVersion = "1.0.4"
     val roomVersion = "2.6.1"
+
+    implementation("org.jetbrains.kotlinx:kotlinx-serialization-json:1.6.0")
 
     //ROOM
     implementation("androidx.room:room-runtime:$roomVersion")

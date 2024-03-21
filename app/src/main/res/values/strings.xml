@@ -20,7 +20,7 @@
     <string name="what_do_you_need">What do you need?</string>
     <string name="near_your_location">Near your location</string>
     <string name="_properties_in_">properties in</string>
-    <string name="top_rated_in">Top rated in</string>
+    <string name="top_rated_in">Top rated in %1$s</string>
     <string name="top_rated_near_your_location">Top rated near your location</string>
     <string name="filter">Filter</string>
     <string name="find_your_place_in">Find your place in</string>
