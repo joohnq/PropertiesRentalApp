@@ -84,12 +84,12 @@ fun PropertyItemComplete(
                         )
                         Spacer(modifier = Modifier.width(3.dp))
                         Text(
-                            text = rooms.toString() + stringResource(id = R.string.rooms),
+                            text = stringResource(id = R.string.rooms, rooms.toString()),
                             style = p_13_normal_fs.copy(color = Gray7D7F88)
                         )
                     }
                     Spacer(modifier = Modifier.width(10.dp))
-                    Row{
+                    Row {
                         Icon(
                             painter = painterResource(id = R.drawable.ic_size),
                             contentDescription = stringResource(id = R.string.filter),
@@ -97,7 +97,7 @@ fun PropertyItemComplete(
                         )
                         Spacer(modifier = Modifier.width(3.dp))
                         Text(
-                            text = size + stringResource(id = R.string.m2),
+                            text = size,
                             style = p_13_normal_fs.copy(color = Gray7D7F88)
                         )
                     }

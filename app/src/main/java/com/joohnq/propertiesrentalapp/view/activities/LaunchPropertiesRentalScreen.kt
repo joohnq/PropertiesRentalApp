@@ -91,10 +91,12 @@ fun LaunchPropertiesRentalScreen(
         Screen.SavedScreen.rout,
         Screen.ProfileScreen.rout
     )
-    val location by locationViewModel.locationName.collectAsState()
-//    val (nearYourLocation, setNearYourLocation) = rememberSaveable { mutableStateOf<UiState<List<Home>>>(UiState.None) }
-    val autoCompleteLocation by propertyViewModel.autoCompleteLocation.collectAsState()
+    val locationName by locationViewModel.locationName.collectAsState()
+    val location by locationViewModel.location.collectAsState()
+    val autoCompleteLocationNearYourLocation by propertyViewModel.autoCompleteLocationNearYourLocation.collectAsState()
+    val autoCompleteLocationTopRated by propertyViewModel.autoCompleteLocationTopRated.collectAsState()
     val nearYourLocation by propertyViewModel.nearYourLocationProperties.collectAsState()
+    val topRated by propertyViewModel.topRatedProperties.collectAsState()
     val rentOrBuy by mainViewModel.rentOrBuy.collectAsState()
     val onChangeRentOrBuy = { i: Int -> mainViewModel.setRentOrBuy(i) }
     val error = remember { mutableStateOf("") }
@@ -102,7 +104,7 @@ fun LaunchPropertiesRentalScreen(
 
 
     LaunchedEffect(error) {
-        if(error.value.isNotEmpty()){
+        if (error.value.isNotEmpty()) {
             scope.launch {
                 snackBarHostState.showSnackbar(error.value)
             }
@@ -133,17 +135,19 @@ fun LaunchPropertiesRentalScreen(
         propertyViewModel.getAutoComplete()
     }
 
-    when (val state = autoCompleteLocation) {
+    LaunchedEffect(location) {
+        val locationSubAdminArea = location?.subAdminArea
+        locationSubAdminArea?.run { propertyViewModel.getAutoComplete(locationSubAdminArea) }
+    }
+
+    when (val state = autoCompleteLocationTopRated) {
         is UiState.Success -> {
             LaunchedEffect(Unit) {
                 println("Executouuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuu")
                 state.data?.let { autoCompleteRequest: AutoCompleteRequest ->
-                    val payLoad = autoCompleteRequest.payload
-                    payLoad?.run {
-                        val regionId: String = payLoad.sections?.get(0)?.rows?.get(0)?.id ?: ""
-                        val id = regionId.split("_")[1].toInt()
-                        propertyViewModel.getNearYourLocationProperties(id)
-                    }
+                    val autoComplete = autoCompleteRequest.data?.autocomplete
+                    val id = autoComplete?.get(0)?.id ?: ""
+                    propertyViewModel.getTopRatedProperties(id)
                 }
             }
         }
@@ -161,6 +165,40 @@ fun LaunchPropertiesRentalScreen(
         }
 
         is UiState.Failure -> {
+            println("errooooooorrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrr" + state.error)
+            state.error?.let { e ->
+                onErrorAction(e)
+            }
+        }
+
+        else -> Unit
+    }
+    when (val state = autoCompleteLocationNearYourLocation) {
+        is UiState.Success -> {
+            LaunchedEffect(Unit) {
+                println("Executouuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuu")
+                state.data?.let { autoCompleteRequest: AutoCompleteRequest ->
+                    val autoComplete = autoCompleteRequest.data?.autocomplete
+                    val id = autoComplete?.get(0)?.id ?: ""
+                    propertyViewModel.getNearYourLocationProperties(id)
+                }
+            }
+        }
+
+        is UiState.Loading -> {
+            Row(
+                horizontalArrangement = Arrangement.Center,
+                verticalAlignment = Alignment.CenterVertically,
+                modifier = Modifier
+                    .heightIn(min = 100.dp)
+                    .fillMaxWidth()
+            ) {
+                Circle(size = 30.dp, color = Purple6246EA)
+            }
+        }
+
+        is UiState.Failure -> {
+            println("errooooooorrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrr2" + state.error)
             state.error?.let { e ->
                 onErrorAction(e)
             }
@@ -223,10 +261,11 @@ fun LaunchPropertiesRentalScreen(
                 composable(Screen.HomeScreen.rout) {
                     HomeScreen(
                         rentOrBuy = rentOrBuy,
-                        location = location,
+                        location = locationName,
                         nearYourLocation = nearYourLocation,
-                        autoCompleteLocation = autoCompleteLocation,
+                        autoCompleteLocation = autoCompleteLocationTopRated,
                         context = activity,
+                        topRated = topRated,
                         scope = scope,
                         fusedLocationClient = fusedLocationClient,
                         snackBarHostState = snackBarHostState,

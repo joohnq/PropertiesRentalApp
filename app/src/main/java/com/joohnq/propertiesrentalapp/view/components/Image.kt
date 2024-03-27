@@ -10,7 +10,7 @@ import coil.request.ImageRequest
 fun CustomImage(path: String, contentDescription: String) {
     AsyncImage(
         model = ImageRequest.Builder(LocalContext.current)
-            .data("https://images.pexels.com/photos/106399/pexels-photo-106399.jpeg")
+            .data(path ?: "https://images.pexels.com/photos/106399/pexels-photo-106399.jpeg")
             .build(),
         contentDescription = contentDescription,
         contentScale = ContentScale.Crop

@@ -14,9 +14,9 @@ object Constants {
 
     const val FIREBASE_USERS = "users"
 
-    const val RETROFIT_PATH_PROPERTIES_LIST = "properties/list"
-    const val RETROFIT_URL_BASE = "https://unofficial-redfin.p.rapidapi.com/"
-    const val RETROFIT_PATH_AUTO_COMPLETE = "auto-complete"
+    const val RETROFIT_PATH_PROPERTIES_LIST = "/properties/search-buy"
+    const val RETROFIT_URL_BASE = "https://realtor-search.p.rapidapi.com"
+    const val RETROFIT_PATH_AUTO_COMPLETE = "/properties/auto-complete"
 
     const val DATABASE_TABLE_HOME_PROPERTIES = "home_properties"
 

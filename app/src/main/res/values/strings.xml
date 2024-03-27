@@ -38,8 +38,8 @@
     <string name="sing_in_with_google">Sign in with Google</string>
     <string name="forgot_password">Forgot password?</string>
     <string name="property_image">Property Image</string>
-    <string name="rooms">Room(s)</string>
-    <string name="m2">m²</string>
+    <string name="rooms">%1$s room(s)</string>
+    <string name="m2">%1$s m²</string>
     <string name="por_month">/ month</string>
     <string name="price">$</string>
     <string name="confirm">Confirm</string>

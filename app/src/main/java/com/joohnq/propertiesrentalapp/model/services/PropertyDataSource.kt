@@ -12,7 +12,7 @@ class HeaderInterceptor : Interceptor {
     override fun intercept(chain: Interceptor.Chain): okhttp3.Response {
         val request: Request = chain.request().newBuilder()
             .addHeader("X-RapidAPI-Key", "91695d416bmsh1eff7b60d287168p154ac7jsn3f1bd6926c1b")
-            .addHeader("X-RapidAPI-Host", "unofficial-redfin.p.rapidapi.com")
+            .addHeader("X-RapidAPI-Host", "realtor-search.p.rapidapi.com")
             .build()
         return chain.proceed(request)
     }

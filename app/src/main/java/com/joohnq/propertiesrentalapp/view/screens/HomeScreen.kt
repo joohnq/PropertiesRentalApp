@@ -21,7 +21,6 @@ import androidx.compose.material3.Icon
 import androidx.compose.material3.SnackbarHostState
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
-import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
@@ -42,7 +41,7 @@ import com.commandiron.compose_loading.Circle
 import com.google.android.gms.location.FusedLocationProviderClient
 import com.joohnq.propertiesrentalapp.R
 import com.joohnq.propertiesrentalapp.model.entities.AutoCompleteRequest
-import com.joohnq.propertiesrentalapp.model.entities.Home
+import com.joohnq.propertiesrentalapp.model.entities.Result
 import com.joohnq.propertiesrentalapp.model.entities.Section
 import com.joohnq.propertiesrentalapp.view.components.HomePropertiesCarousel
 import com.joohnq.propertiesrentalapp.view.components.RadioGroupTwice
@@ -66,7 +65,8 @@ import kotlinx.coroutines.CoroutineScope
 fun HomeScreen(
     rentOrBuy: String = Section.TO_RENT,
     location: UiState<String?> = UiState.None,
-    nearYourLocation: UiState<List<Home>?> = UiState.None,
+    nearYourLocation: UiState<List<Result>?> = UiState.None,
+    topRated: UiState<List<Result>?> = UiState.None,
     autoCompleteLocation: UiState<AutoCompleteRequest> = UiState.None,
     context: Context? = null,
     scope: CoroutineScope = rememberCoroutineScope(),
@@ -183,12 +183,9 @@ fun HomeScreen(
         Spacer(modifier = Modifier.height(10.dp))
         when (nearYourLocation) {
             is UiState.Success -> {
-                nearYourLocation.data?.let { properties: List<Home> ->
+                nearYourLocation.data?.let { properties: List<Result> ->
                     HomePropertiesCarousel(
-                        items = properties.filter { home ->
-                            val posterImage = home.homeData?.photosInfo?.posterFrameUrl
-                            !posterImage.isNullOrEmpty()
-                        }.take(5),
+                        items = properties.take(5),
                         section = rentOrBuy
                     )
                 }
@@ -254,6 +251,36 @@ fun HomeScreen(
                         .copy(brush = GradientPurpleToPurple),
                 )
             }
+        }
+        when (topRated) {
+            is UiState.Success -> {
+                topRated.data?.let { properties: List<Result> ->
+                    HomePropertiesCarousel(
+                        items = properties.take(5),
+                        section = rentOrBuy
+                    )
+                }
+            }
+
+            is UiState.Loading -> {
+                Row(
+                    horizontalArrangement = Arrangement.Center,
+                    verticalAlignment = Alignment.CenterVertically,
+                    modifier = Modifier
+                        .heightIn(min = 100.dp)
+                        .fillMaxWidth()
+                ) {
+                    Circle(size = 30.dp, color = Purple6246EA)
+                }
+            }
+
+            is UiState.Failure -> {
+                topRated.error?.let { e ->
+                    onErrorAction(e)
+                }
+            }
+
+            else -> Unit
         }
     }
 }

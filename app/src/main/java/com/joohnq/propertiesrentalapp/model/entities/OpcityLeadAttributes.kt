@@ -5,9 +5,7 @@ import kotlinx.serialization.SerialName
 import kotlinx.serialization.Serializable
 
 @Serializable
-data class Centroid(
-    @SerialName("lat")
-    val lat: Double? = null,
-    @SerialName("lon")
-    val lon: Double? = null
+data class OpcityLeadAttributes(
+    @SerialName("flip_the_market_enabled")
+    val flipTheMarketEnabled: Boolean? = null
 )

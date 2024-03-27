@@ -6,12 +6,10 @@ import kotlinx.serialization.Serializable
 
 @Serializable
 data class AutoCompleteRequest(
-    @SerialName("errorMessage")
-    val errorMessage: String? = "",
-    @SerialName("payload")
-    val payload: Payload? = Payload(),
-    @SerialName("resultCode")
-    val resultCode: Int? = 0,
-    @SerialName("version")
-    val version: Int? = 0
+    @SerialName("data")
+    val data: Data? = null,
+    @SerialName("message")
+    val message: String? = null,
+    @SerialName("status")
+    val status: Boolean? = null
 )

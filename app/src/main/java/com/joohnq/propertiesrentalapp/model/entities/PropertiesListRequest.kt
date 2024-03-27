@@ -6,6 +6,10 @@ import kotlinx.serialization.Serializable
 
 @Serializable
 data class PropertiesListRequest(
-    @SerialName("homes")
-    val homes: List<Home>? = listOf()
+    @SerialName("data")
+    val data: Data? = Data(),
+    @SerialName("message")
+    val message: String? = "",
+    @SerialName("status")
+    val status: Boolean? = false
 )

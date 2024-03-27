@@ -7,7 +7,7 @@ import retrofit2.Response
 import javax.inject.Inject
 
 interface PropertyRepository {
-    suspend fun getNearYourLocationProperties(regionId: Int): Response<PropertiesListRequest>
+    suspend fun getPropertiesByLocation(location: String): Response<PropertiesListRequest>
     suspend fun getAutoComplete(city: String): Response<AutoCompleteRequest>
 }
 
@@ -16,8 +16,8 @@ class PropertyRepositoryImpl @Inject constructor(
 ) : PropertyRepository {
     private val propertyService = propertyDataSource.propertyService
 
-    override suspend fun getNearYourLocationProperties(regionId: Int): Response<PropertiesListRequest> {
-        return propertyService.getNearYourLocationProperties(regionId = regionId)
+    override suspend fun getPropertiesByLocation(location: String): Response<PropertiesListRequest> {
+        return propertyService.getNearYourLocationProperties(location = location)
     }
 
     override suspend fun getAutoComplete(city: String): Response<AutoCompleteRequest> {

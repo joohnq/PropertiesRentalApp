@@ -45,13 +45,9 @@ class LocationViewModel @Inject constructor(
     fun getLocationName(location: Location) {
         _locationName.value = UiState.Loading
         viewModelScope.launch {
-
             val address: Address? = locationRepository.getLocationName(location)
-
             val locationName = address?.adminArea + ", " + address?.countryName
-
             _locationName.value = UiState.Success(locationName)
-
             _location.value = address
         }
     }
